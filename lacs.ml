@@ -133,7 +133,7 @@ let profondeur carte =
     for i = 0 to (length-1) do
       for j = 0 to (height-1) do
         if carte.(i).(j) = 1 && toucheterre carte i j length height then
-          l := !l@i::j::[]
+          l := i::j::!l
       done;
     done;
     if !l <> [] then
@@ -144,8 +144,27 @@ let profondeur carte =
   !prof
 ;;
 
-
 Printf.printf "La prof de la carte0 est %d\n" (profondeur carte0);;
 Printf.printf "La prof de la carte1 est %d\n" (profondeur carte1);;
 Printf.printf "La prof de la carte2 est %d\n" (profondeur carte2);;
 Printf.printf "La prof de la carte3 est %d\n" (profondeur carte3);;
+
+(* Benchmark : test sur une carte 100x100
+à ajouter à la fin de votre code *)
+
+let carte4 = 
+  let taille = 100 in
+  let tab = Array.make_matrix taille taille 0 in
+  for i = 1 to taille-2 do
+    for j = 1 to taille-2 do
+      tab.(i).(j) <- 1
+    done
+  done;
+  tab.(35).(25) <- 0; tab.(75).(85) <- 0; tab;;
+
+let t0 = Sys.time ();;
+let p3 = profondeur carte4;;
+let t1 = Sys.time ();;
+Printf.printf "profondeur carte4 : %d\n" p3;;
+Printf.printf "temps : %f\n" (t1 -. t0);;
+assert (p3 = 46);;
